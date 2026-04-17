@@ -1,0 +1,159 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #ece5dd;
+}
+
+#login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 100px;
+}
+
+#login input {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#login button {
+    padding: 10px 20px;
+    background: #25d366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Chat Layout */
+#chatArea {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#chatHeader {
+    background: #075e54;
+    color: white;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    list-style: none;
+    margin: 0;
+}
+
+#messages li {
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 20px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+#messages li.user1 {
+    background: #dcf8c6;
+    margin-left: auto;
+}
+
+#messages li.user2 {
+    background: #fff;
+    margin-right: auto;
+}
+
+#inputArea {
+    display: flex;
+    padding: 10px;
+    gap: 5px;
+    background: #f0f0f0;
+    align-items: center;
+}
+
+#inputArea input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+.call-btn { background: #25d366; color: white; }
+.end-btn { background: #ff3b30; color: white; }
+.send-btn { background: #075e54; color: white; }
+.file-btn { background: #34b7f1; color: white; }
+
+.call-btn:hover { background: #20b858; }
+.end-btn:hover { background: #e32c24; }
+.send-btn:hover { background: #05473f; }
+.file-btn:hover { background: #2b99cc; }
+
+/* Incoming call overlay */
+#incomingCall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    z-index: 1000;
+}
+
+#incomingCall button {
+    margin: 10px;
+    padding: 10px 25px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+#incomingCall .accept-btn { background: #25d366; color: white; }
+#incomingCall .decline-btn { background: #ff3b30; color: white; }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    #inputArea input[type="text"] { padding: 8px; font-size: 14px; }
+    .button { padding: 6px 10px; font-size: 12px; }
+    #chatHeader { font-size: 14px; padding: 8px; }
+}
+
+#videoContainer {
+    display: flex;
+    gap: 10px;
+}
+
+video {
+    width: 45%;
+    background: black;
+    border-radius: 10px;
+}
+
+
+

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Chat App</title>
+    <style>
+        /* ===== GENERAL ===== */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #ece5dd;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== LOGIN ===== */
+        #login {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        #login input {
+            padding: 12px;
+            margin-bottom: 12px;
+            width: 220px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        #login button {
+            padding: 12px 25px;
+            background: #25d366;
+            border: none;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        #login button:hover {
+            background: #128c7e;
+        }
+
+        /* ===== APP LAYOUT ===== */
+        #app {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* ===== CHAT HEADER ===== */
+        #chatHeader {
+            background: #075e54;
+            color: white;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        #chatHeader button {
+            background: #25d366;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            margin-left: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        #chatHeader button:hover {
+            background: #128c7e;
+        }
+
+        #callTimer {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* ===== VIDEO ===== */
+        #videoContainer {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            padding: 5px;
+        }
+
+        video {
+            width: 48%;
+            background: black;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        /* ===== MESSAGES ===== */
+        #messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            list-style: none;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #messages li {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 15px;
+        }
+
+        #messages li.user1 {
+            background: #dcf8c6;
+            align-self: flex-end;
+        }
+
+        #messages li.user2 {
+            background: #fff;
+            align-self: flex-start;
+        }
+
+        /* ===== INPUT AREA ===== */
+        #inputArea {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            background: #f0f0f0;
+            align-items: center;
+        }
+
+        #inputArea input[type="text"] {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        #inputArea button {
+            width: 45px;
+            height: 45px;
+            background: #25d366;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        #inputArea button:hover {
+            background: #128c7e;
+        }
+
+        /* ===== TYPING INDICATOR ===== */
+        #typingIndicator {
+            font-size: 12px;
+            color: #555;
+            margin-left: 10px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            #videoContainer {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            video {
+                flex: 1 1 48%;
+                height: 200px;
+            }
+
+            #inputArea input[type="text"] {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            #chatHeader {
+                font-size: 14px;
+            }
+
+            #chatHeader button {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            #inputArea button {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        #messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #messages::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+    <div id="login">
+        <h2>Enter your name</h2>
+        <input type="text" id="username" placeholder="Your name">
+        <button onclick="join()">Join Chat</button>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app">
+
+        <div id="chatHeader">
+            <span id="chatName">Other User</span>
+            <div>
+                <span id="callTimer">00:00</span>
+                <button onclick="startAudioCall()">📞</button>
+                <button onclick="startVideoCall()">📹</button>
+                <button onclick="endCall()">❌</button>
+            </div>
+        </div>
+
+        <div id="videoContainer">
+            <video id="localVideo" autoplay muted onclick="toggleFullScreen(this)"></video>
+            <video id="remoteVideo" autoplay onclick="toggleFullScreen(this)"></video>
+        </div>
+
+        <ul id="messages"></ul>
+        <div id="typingIndicator"></div>
+
+        <div id="inputArea">
+            <input type="text" id="msg" placeholder="Type a message..." oninput="sendTyping()">
+            <button onclick="sendMessage()">💬</button>
+            <input type="file" id="fileInput" style="display:none;" onchange="sendFile(this.files[0])">
+            <button onclick="document.getElementById('fileInput').click()">📎</button>
+            <button onmousedown="startRecording()" onmouseup="stopRecording()">🎤</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+
+
+
+</body>
+
+</html>
