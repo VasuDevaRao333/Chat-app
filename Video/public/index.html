@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Call App</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #0b141a;
+            color: white;
+        }
+
+        /* LOGIN */
+        #login {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #login input {
+            padding: 12px;
+            width: 220px;
+            border-radius: 20px;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        #login button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #00a884;
+            color: white;
+        }
+
+        /* APP */
+        #app {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        #header {
+            background: #202c33;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #status {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* CALL BUTTONS */
+        #controls button {
+            background: #00a884;
+            border: none;
+            color: white;
+            padding: 8px;
+            margin-left: 5px;
+            border-radius: 50%;
+        }
+
+        /* VIDEO AREA */
+        #videoContainer {
+            flex: 1;
+            position: relative;
+            background: #000;
+            overflow: hidden;
+        }
+
+        /* MAIN REMOTE VIDEO (FULL SCREEN) */
+        #remoteVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000;
+        }
+
+        /* SMALL LOCAL VIDEO (PICTURE-IN-PICTURE STYLE) */
+        #localVideo {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+
+            width: 120px;
+            height: 160px;
+
+            border-radius: 15px;
+            object-fit: cover;
+
+            border: 2px solid white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+
+            z-index: 10;
+        }
+
+        /* MOBILE RESPONSIVE */
+        @media (max-width: 600px) {
+            #localVideo {
+                width: 90px;
+                height: 120px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        /* INCOMING CALL SCREEN */
+        #incomingCall {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #incomingBox {
+            background: #202c33;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        #incomingBox button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .accept {
+            background: #00a884;
+            color: white;
+        }
+
+        .reject {
+            background: red;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN -->
+    <div id="login">
+        <h2>Enter User Name</h2>
+        <input id="username" placeholder="Your name">
+        <button onclick="join()">Join</button>
+    </div>
+
+    <!-- APP -->
+    <div id="app">
+
+        <div id="header">
+            <div>
+                <div id="chatName">User</div>
+                <div id="status">Offline 🔴</div>
+            </div>
+
+            <div id="controls">
+                <button onclick="flipCamera()">🔁</button>
+                <button onclick="startAudioCall()">📞</button>
+                <button onclick="startVideoCall()">📹</button>
+                <button onclick="endCall()">❌</button>
+            </div>
+        </div>
+
+        <div id="videoContainer">
+            <video id="remoteVideo" autoplay></video>
+            <video id="localVideo" autoplay muted></video>
+        </div>
+
+    </div>
+
+    <!-- INCOMING CALL UI -->
+    <div id="incomingCall">
+        <div id="incomingBox">
+            <h2 id="callerName">Incoming Call</h2>
+            <button class="accept" onclick="acceptCall()">Accept</button>
+            <button class="reject" onclick="rejectCall()">Reject</button>
+        </div>
+    </div>
+
+    <div id="toast" style="
+position: fixed;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+background: #ff4d4d;
+color: white;
+padding: 10px 20px;
+border-radius: 20px;
+display: none;
+z-index: 9999;
+"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
