@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Orbit — Chat & Calls</title>
   <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
   <section id="login" class="login-screen">
     <div class="login-card">
@@ -23,8 +25,14 @@
   </section>
 
   <main id="app" class="app-shell" hidden>
-    <aside class="sidebar">
-      <div class="brand"><span class="brand-mark small">◉</span><span>orbit<span class="brand-dot">.</span></span></div>
+    <div id="sidebarBackdrop" class="sidebar-backdrop" hidden></div>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <span class="brand-mark small">◉</span>
+        <span>orbit<span class="brand-dot">.</span></span>
+        <button id="closeSidebarBtn" class="icon-button mobile-only" aria-label="Close menu">✕</button>
+      </div>
       <div class="sidebar-label">WORKSPACE</div>
       <div class="nav-item active"><span>▤</span> Messages <span class="nav-pill">LIVE</span></div>
       <div class="sidebar-label people-label">PEOPLE <span id="peopleCount">0</span></div>
@@ -38,7 +46,13 @@
 
     <section class="main-panel">
       <header class="topbar">
-        <div><div class="eyebrow">YOUR SPACE</div><h2 id="chatTitle">Choose someone to chat</h2></div>
+        <div class="topbar-left">
+          <button id="menuBtn" class="icon-button mobile-only" aria-label="Open people list">☰</button>
+          <div class="title-wrap">
+            <div class="eyebrow">YOUR SPACE</div>
+            <h2 id="chatTitle">Choose someone to chat</h2>
+          </div>
+        </div>
         <div class="top-actions">
           <span class="connection"><span class="dot"></span><span id="connectionStatus">Connected</span></span>
           <button id="audioCallBtn" class="call-action" disabled title="Audio call">☎ <span>Audio</span></button>
@@ -47,24 +61,37 @@
       </header>
 
       <div id="emptyState" class="empty-state">
-        <div class="empty-art"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-core">◉</div></div>
+        <div class="empty-art">
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-core">◉</div>
+        </div>
         <h3>Your conversations, in orbit.</h3>
-        <p>Select an online person from the left to start a conversation.</p>
+        <p>Select an online person from the menu to start a conversation.</p>
       </div>
 
       <ul id="messages" aria-live="polite"></ul>
+
       <form id="inputArea" autocomplete="off">
         <button type="button" id="emojiBtn" class="composer-tool" title="Add a smile">☺</button>
-        <input id="messageInput" type="text" maxlength="2000" placeholder="Write a message…" disabled>
+        <input id="messageInput" class="message-input" type="text" maxlength="2000" placeholder="Write a message…"
+          disabled>
         <button type="submit" id="sendBtn" class="send-button" disabled>Send <span>↗</span></button>
       </form>
     </section>
 
     <section id="callPanel" class="call-panel" hidden>
-      <div class="call-top"><span class="live-badge"><span></span> LIVE CALL</span><button id="minimizeCall" class="icon-button">⌄</button></div>
+      <div class="call-top">
+        <span class="live-badge"><span></span> LIVE CALL</span>
+        <button id="minimizeCall" class="icon-button" title="Minimize call">⌄</button>
+      </div>
       <div class="video-stage">
         <video id="remoteVideo" autoplay playsinline></video>
-        <div id="remotePlaceholder" class="remote-placeholder"><div class="avatar large" id="remoteAvatar">?</div><h3 id="remoteCallName">Waiting for video…</h3><p id="callStatus">Connecting securely</p></div>
+        <div id="remotePlaceholder" class="remote-placeholder">
+          <div class="avatar large" id="remoteAvatar">?</div>
+          <h3 id="remoteCallName">Waiting for video…</h3>
+          <p id="callStatus">Connecting securely</p>
+        </div>
         <video id="localVideo" autoplay muted playsinline></video>
         <div class="video-label">YOU</div>
       </div>
@@ -79,10 +106,21 @@
   </main>
 
   <div id="incomingCall" class="overlay" hidden>
-    <div class="incoming-card"><div class="ring-icon">☎</div><p class="eyebrow">INCOMING <span id="incomingType">VIDEO</span> CALL</p><h2 id="callerName">Someone is calling</h2><p class="muted">Would you like to answer?</p><div class="incoming-actions"><button id="rejectBtn" class="danger">Decline</button><button id="acceptBtn" class="primary">Answer ↗</button></div></div>
+    <div class="incoming-card">
+      <div class="ring-icon">☎</div>
+      <p class="eyebrow">INCOMING <span id="incomingType">VIDEO</span> CALL</p>
+      <h2 id="callerName">Someone is calling</h2>
+      <p class="muted">Would you like to answer?</p>
+      <div class="incoming-actions">
+        <button id="rejectBtn" class="danger">Decline</button>
+        <button id="acceptBtn" class="primary">Answer ↗</button>
+      </div>
+    </div>
   </div>
+
   <div id="toast" class="toast" role="status"></div>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/script.js"></script>
 </body>
+
 </html>
