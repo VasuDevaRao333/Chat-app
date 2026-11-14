@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Orbit — Chat & Calls</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <section id="login" class="login-screen">
+    <div class="login-card">
+      <div class="brand-mark">◉</div>
+      <p class="eyebrow">PRIVATE • REALTIME</p>
+      <h1>Meet in a moment.</h1>
+      <p class="muted">Chat, talk, and see each other from anywhere.</p>
+      <form id="loginForm">
+        <label for="username">Your display name</label>
+        <input id="username" maxlength="25" autocomplete="nickname" placeholder="e.g. Alex" required>
+        <button class="primary wide" type="submit">Enter Orbit <span>↗</span></button>
+      </form>
+      <div class="login-foot"><span class="dot"></span> Secure connection via your server</div>
+    </div>
+  </section>
+
+  <main id="app" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark small">◉</span><span>orbit<span class="brand-dot">.</span></span></div>
+      <div class="sidebar-label">WORKSPACE</div>
+      <div class="nav-item active"><span>▤</span> Messages <span class="nav-pill">LIVE</span></div>
+      <div class="sidebar-label people-label">PEOPLE <span id="peopleCount">0</span></div>
+      <div id="peopleList" class="people-list"></div>
+      <div class="sidebar-bottom">
+        <div class="avatar me-avatar" id="myAvatar">ME</div>
+        <div class="me-info"><strong id="myName">You</strong><small><span class="dot"></span> Online</small></div>
+        <button id="logoutBtn" class="icon-button" title="Log out">↪</button>
+      </div>
+    </aside>
+
+    <section class="main-panel">
+      <header class="topbar">
+        <div><div class="eyebrow">YOUR SPACE</div><h2 id="chatTitle">Choose someone to chat</h2></div>
+        <div class="top-actions">
+          <span class="connection"><span class="dot"></span><span id="connectionStatus">Connected</span></span>
+          <button id="audioCallBtn" class="call-action" disabled title="Audio call">☎ <span>Audio</span></button>
+          <button id="videoCallBtn" class="call-action video" disabled title="Video call">▣ <span>Video</span></button>
+        </div>
+      </header>
+
+      <div id="emptyState" class="empty-state">
+        <div class="empty-art"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-core">◉</div></div>
+        <h3>Your conversations, in orbit.</h3>
+        <p>Select an online person from the left to start a conversation.</p>
+      </div>
+
+      <ul id="messages" aria-live="polite"></ul>
+      <form id="inputArea" autocomplete="off">
+        <button type="button" id="emojiBtn" class="composer-tool" title="Add a smile">☺</button>
+        <input id="messageInput" type="text" maxlength="2000" placeholder="Write a message…" disabled>
+        <button type="submit" id="sendBtn" class="send-button" disabled>Send <span>↗</span></button>
+      </form>
+    </section>
+
+    <section id="callPanel" class="call-panel" hidden>
+      <div class="call-top"><span class="live-badge"><span></span> LIVE CALL</span><button id="minimizeCall" class="icon-button">⌄</button></div>
+      <div class="video-stage">
+        <video id="remoteVideo" autoplay playsinline></video>
+        <div id="remotePlaceholder" class="remote-placeholder"><div class="avatar large" id="remoteAvatar">?</div><h3 id="remoteCallName">Waiting for video…</h3><p id="callStatus">Connecting securely</p></div>
+        <video id="localVideo" autoplay muted playsinline></video>
+        <div class="video-label">YOU</div>
+      </div>
+      <div class="call-controls">
+        <button id="muteBtn" class="round-control" title="Mute microphone">🎙</button>
+        <button id="cameraBtn" class="round-control" title="Toggle camera">▣</button>
+        <button id="flipBtn" class="round-control" title="Switch camera">↻</button>
+        <button id="fullscreenBtn" class="round-control" title="Fullscreen">⛶</button>
+        <button id="endCallBtn" class="round-control hangup" title="End call">☎</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="incomingCall" class="overlay" hidden>
+    <div class="incoming-card"><div class="ring-icon">☎</div><p class="eyebrow">INCOMING <span id="incomingType">VIDEO</span> CALL</p><h2 id="callerName">Someone is calling</h2><p class="muted">Would you like to answer?</p><div class="incoming-actions"><button id="rejectBtn" class="danger">Decline</button><button id="acceptBtn" class="primary">Answer ↗</button></div></div>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/script.js"></script>
+</body>
+</html>
