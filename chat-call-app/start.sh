@@ -1,9 +1,9 @@
-
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
 PORT="${PORT:-3000}"
 APP_NAME="Chat Call App"
+CF_VERSION="${CF_VERSION:-2026.11.0}"
 
 # -------------------------------
 # Detect operating system
@@ -12,11 +12,12 @@ OS="$(uname -s)"
 ARCH="$(uname -m)"
 
 echo "================================"
-echo "       ${APP_NAME}"
+echo "        ${APP_NAME}"
 echo "================================"
 echo "OS: $OS"
 echo "Architecture: $ARCH"
 echo "Port: $PORT"
+echo "Cloudflared Version: $CF_VERSION"
 
 # -------------------------------
 # Root / sudo helper
@@ -77,7 +78,7 @@ install_node() {
 # Install cloudflared
 # -------------------------------
 install_cloudflared() {
-  echo "Installing Cloudflare Tunnel..."
+  echo "Installing Cloudflare Tunnel (v${CF_VERSION})..."
 
   case "$OS" in
     Linux)
@@ -93,8 +94,9 @@ install_cloudflared() {
           ;;
       esac
 
-      local DOWNLOAD_URL="https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${CF_ARCH}"
+      local DOWNLOAD_URL="https://github.com/cloudflare/cloudflared/releases/download/${CF_VERSION}/cloudflared-linux-${CF_ARCH}"
 
+      echo "Downloading from: $DOWNLOAD_URL"
       curl -fsSL "$DOWNLOAD_URL" -o /tmp/cloudflared
       chmod +x /tmp/cloudflared
       run_as_root install -m 755 /tmp/cloudflared /usr/local/bin/cloudflared
