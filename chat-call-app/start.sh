@@ -22,10 +22,15 @@ echo "Port: $PORT"
 # Root / sudo helper
 # -------------------------------
 run_as_root() {
-  if [[ "$EUID" -eq 0 ]]; then
+  if [[ "$(id -u)" -eq 0 ]]; then
     "$@"
-  else
+  elif command -v sudo >/dev/null 2>&1; then
     sudo "$@"
+  elif command -v su >/dev/null 2>&1; then
+    su -c "$(printf '%q ' "$@")"
+  else
+    echo "Root privileges required to install packages."
+    exit 1
   fi
 }
 
